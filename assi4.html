@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Assistant</title>
+    <link rel="shortcut icon" href="https://www.shutterstock.com/shutterstock/videos/1110319785/thumb/9.jpg?ip=x480">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            flex-direction: column;
+        }
+        #image{
+            width: 25vw;
+        }
+        h1{
+            color: white;
+            font-family: "Roboto", sans-serif;
+        }
+        #name{
+            color: #415fd9;
+            font-size: 41px;
+        }
+        #vi{
+            color: rgb(164, 74, 162);
+            font-size: 41px;
+        }
+        #voice{
+            width: 300px;
+            display: none; /* The listening gif should be hidden initially */
+        }
+        #btn{
+            width: 30%;
+            background: linear-gradient(to right,#063969,#6a1f5e);
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center items vertically */
+            text-align: center;
+            gap: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 22px;
+            box-shadow: 2px 2px 13px #063969 ,2px 2px 13px #6a1f5e;
+            border: none;
+            color: white;
+            transition: .4s;
+        }
+        #btn:hover{
+            cursor: pointer;
+            box-shadow: 2px 2px 10px #063969 ,2px 2px 10px #6a1f5e;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://www.shutterstock.com/shutterstock/videos/1110319785/thumb/9.jpg?ip=x480" alt="image" id="image">
+    <h1>Hello,my name is<span id="name">Graiz</span>,I am your <span id="vi">Virtual Assistant</span></h1>
+    <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3kzaTBrMWh5NGYxeHVvM2djaDk5bTloZHIxaGR4czVvMjRtd2RveSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/bS06Wd8h44b82Q3iBf/giphy.gif" alt="listening animation" id="voice">
+    <button id="btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#FFFFFF" fill="none">
+            <path d="M17 7V11C17 13.7614 14.7614 16 12 16C9.23858 16 7 13.7614 7 11V7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7Z" stroke="currentColor" stroke-width="1.5"></path>
+            <path d="M20 11C20 15.4183 16.4183 19 12 19M12 19C7.58172 19 4 15.4183 4 11M12 19V22M12 22H15M12 22H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+        <span id="content">Click to Talk</span>
+    </button>
+    <script>
+        let btn = document.querySelector('#btn');
+        let content = document.querySelector('#content');
+        let voice = document.querySelector('#voice');
+    
+        function speak(text){
+            let text_speak = new SpeechSynthesisUtterance(text);
+            text_speak.rate = 1;
+            text_speak.volume = 1;
+            text_speak.pitch = 1;
+            // Corrected typo: 'window.SpeechSynthesis' to 'window.speechSynthesis'
+            window.speechSynthesis.speak(text_speak);
+        }
+    
+        function wishMe(){
+            let day = new Date();
+            let hours = day.getHours();
+            if(hours >= 0 && hours < 12 ){
+                speak("I wish you a charmful Good Morning");
+            } else if(hours >= 12 && hours < 16){
+                speak("Good Afternoon");
+            } else {
+                speak("Good Evening");
+            }
+        }
+    
+        window.addEventListener('load', () => {
+            speak("Hello, my name is Graiz, I am your virtual assistant");
+            wishMe();
+        });
+    
+        // Corrected typo: 'webkitSpeechRecongnition' to 'webkitSpeechRecognition'
+        let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        // Corrected typo: 'recongnition' to 'recognition'
+        let recognition = new SpeechRecognition();
+    
+        recognition.onstart = () => {
+            content.innerText = "Listening...";
+            btn.style.display = "none";
+            voice.style.display = "flex";
+        };
+    
+        recognition.onend = () => {
+            btn.style.display = "flex";
+            voice.style.display = "none";
+            content.innerText = "Click to Talk";
+        };
+    
+        recognition.onresult = (event) => {
+            let current = event.resultIndex;
+            // Corrected undefined variable: 'currentIndex' to 'current'
+            let transcript = event.results[current][0].transcript;
+            content.innerText = transcript;
+            takeCommand(transcript.toLowerCase());
+            console.log(event);
+        };
+    
+        btn.addEventListener("click", () => {
+            recognition.start();
+        });
+    
+        function takeCommand(message){
+            if(message.includes("hello")){
+                speak("hello, how can i help you?");
+            }
+            else if(message.includes("who are you?")){
+                speak("i am virtual assistant, created by Abhilipsa");
+            } else if(message.includes("open youtube")){ // Corrected 'include' to 'includes'
+                speak("OK opening youtube");
+                window.open("https://www.youtube.com/");
+            } else if(message.includes("open google")){ // Corrected 'include' to 'includes'
+                speak("OK opening google");
+                window.open("https://www.google.com/");
+            } else if(message.includes("open whatsapp")){ // Corrected 'include' to 'includes'
+                speak("OK opening whatsapp");
+                window.open("https://web.whatsapp.com/");
+            } else if(message.includes("open instagram")){ // Corrected 'include' to 'includes'
+                speak("OK opening instagram");
+                window.open("https://www.instagram.com/");
+            } else if(message.includes("open chatgpt")){ // Corrected 'include' to 'includes'
+                speak("OK opening chatgpt");
+                window.open("https://chatgpt.com/");
+            } else {
+                let cleanedMessage = message.replace("graiz", "").trim();
+                speak(`this is what i found on google for ${cleanedMessage}`);
+                // Corrected to use the cleaned message for the search query
+                window.open(`https://www.google.com/search?q=${cleanedMessage}`);
+            }
+        }
+    </script>
+</body>
+</html>
