@@ -157,7 +157,6 @@
             } else {
                 let cleanedMessage = message.replace("graiz", "").trim();
                 speak(`this is what i found on google for ${cleanedMessage}`);
-                // Corrected to use the cleaned message for the search query
                 window.open(`https://www.google.com/search?q=${cleanedMessage}`);
             }
         }
