@@ -106,10 +106,7 @@
             speak("Hello, my name is Graiz, I am your virtual assistant");
             wishMe();
         });
-    
-        // Corrected typo: 'webkitSpeechRecongnition' to 'webkitSpeechRecognition'
         let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        // Corrected typo: 'recongnition' to 'recognition'
         let recognition = new SpeechRecognition();
     
         recognition.onstart = () => {
