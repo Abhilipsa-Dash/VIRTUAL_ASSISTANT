@@ -123,7 +123,6 @@
     
         recognition.onresult = (event) => {
             let current = event.resultIndex;
-            // Corrected undefined variable: 'currentIndex' to 'current'
             let transcript = event.results[current][0].transcript;
             content.innerText = transcript;
             takeCommand(transcript.toLowerCase());
@@ -140,19 +139,19 @@
             }
             else if(message.includes("who are you?")){
                 speak("i am virtual assistant, created by Abhilipsa");
-            } else if(message.includes("open youtube")){ // Corrected 'include' to 'includes'
+            } else if(message.includes("open youtube")){ 
                 speak("OK opening youtube");
                 window.open("https://www.youtube.com/");
-            } else if(message.includes("open google")){ // Corrected 'include' to 'includes'
+            } else if(message.includes("open google")){
                 speak("OK opening google");
                 window.open("https://www.google.com/");
-            } else if(message.includes("open whatsapp")){ // Corrected 'include' to 'includes'
+            } else if(message.includes("open whatsapp")){ 
                 speak("OK opening whatsapp");
                 window.open("https://web.whatsapp.com/");
-            } else if(message.includes("open instagram")){ // Corrected 'include' to 'includes'
+            } else if(message.includes("open instagram")){
                 speak("OK opening instagram");
                 window.open("https://www.instagram.com/");
-            } else if(message.includes("open chatgpt")){ // Corrected 'include' to 'includes'
+            } else if(message.includes("open chatgpt")){
                 speak("OK opening chatgpt");
                 window.open("https://chatgpt.com/");
             } else {
